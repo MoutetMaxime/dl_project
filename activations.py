@@ -1,7 +1,5 @@
 import numpy as np
 
-from Rbm import RBM
-
 
 def sigmoid(x: np.ndarray) -> np.ndarray:
     return 1 / (1 + np.exp(-x))

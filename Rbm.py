@@ -70,11 +70,11 @@ if __name__ == "__main__":
     # Train the RBM on the binary alpha digit dataset
     from load_data import lire_alpha_digit
 
-    characters = ["f", "m"]
+    characters = ["m"]
     images = lire_alpha_digit(characters)
     print(images.shape)
 
-    rbm = RBM(320, 64)
+    rbm = RBM(320, 128)
     rbm.train(images, epochs=30000, batch_size=16, eps=0.01, verbose=True)
 
     # Generate new images
