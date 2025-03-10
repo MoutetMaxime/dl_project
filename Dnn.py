@@ -1,5 +1,6 @@
 import numpy as np
 
+from activations import softmax
 from Dbn import DBN
 from Rbm import RBM
 
@@ -14,10 +15,5 @@ class DNN(DBN):
         super(DNN).train(x, epochs, batch_size, eps, verbose)
 
     @staticmethod
-    def softmax(x: np.ndarray) -> np.ndarray:
-        exp = np.exp(x - x.max(axis=1, keepdims=True))
-        return exp / exp.sum(axis=1, keepdims=True)
-
-    @staticmethod
     def calcul_softmax(rbm: RBM, x: np.ndarray) -> np.ndarray:
-        return DNN.softmax(x @ rbm.w + rbm.b)
+        return softmax(x @ rbm.w + rbm.b)

@@ -1,5 +1,7 @@
 import numpy as np
 
+from activations import sigmoid
+
 
 class RBM:
     def __init__(self, p: int, q: int) -> None:
@@ -7,17 +9,13 @@ class RBM:
         self.a = np.zeros(p)  # Visible biases
         self.b = np.zeros(q)  # Hidden biases
 
-    @staticmethod
-    def sigmoid(x: np.ndarray) -> np.ndarray:
-        return 1 / (1 + np.exp(-x))
-
     def entree_sortie(self, x: np.ndarray) -> np.ndarray:
         """ Compute P(h | v) """
-        return self.sigmoid(x @ self.w + self.b)
+        return sigmoid(x @ self.w + self.b)
 
     def sortie_entree(self, h: np.ndarray) -> np.ndarray:
         """ Compute P(v | h) """
-        return self.sigmoid(h @ self.w.T + self.a)
+        return sigmoid(h @ self.w.T + self.a)
 
     def train(self, x: np.ndarray, epochs: int, batch_size: int, eps: float=0.01, verbose: bool=True) -> None:
         N, p = x.shape
