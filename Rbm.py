@@ -6,7 +6,7 @@ class RBM:
         self.w = np.random.randn(p, q) * np.sqrt(1 / p)
         self.a = np.zeros(p)  # Visible biases
         self.b = np.zeros(q)  # Hidden biases
-    
+
     @staticmethod
     def sigmoid(x: np.ndarray) -> np.ndarray:
         return 1 / (1 + np.exp(-x))
@@ -14,11 +14,11 @@ class RBM:
     def entree_sortie(self, x: np.ndarray) -> np.ndarray:
         """ Compute P(h | v) """
         return self.sigmoid(x @ self.w + self.b)
-    
+
     def sortie_entree(self, h: np.ndarray) -> np.ndarray:
         """ Compute P(v | h) """
         return self.sigmoid(h @ self.w.T + self.a)
-    
+
     def train(self, x: np.ndarray, epochs: int, batch_size: int, eps: float=0.01, verbose: bool=True) -> None:
         N, p = x.shape
         q = self.b.shape[0]

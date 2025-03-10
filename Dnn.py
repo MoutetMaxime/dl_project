@@ -4,14 +4,14 @@ from Dbn import DBN
 from Rbm import RBM
 
 
-class Dnn(DBN):
+class DNN(DBN):
     def __init__(self, sizes: list) -> None:
-        super(Dnn).__init__(sizes)
-        self.rbms = self.rbms[:-1]
+        super(DNN).__init__(sizes)
         self.cls_layer = self.rbms[-1]
+        self.rbms = self.rbms[:-1]
 
     def pretrain(self, x: np.ndarray, epochs: int, batch_size: int, eps: float=0.001, verbose: bool=True) -> None:
-        self.train(x, epochs, batch_size, eps, verbose)
+        super(DNN).train(x, epochs, batch_size, eps, verbose)
 
     @staticmethod
     def softmax(x: np.ndarray) -> np.ndarray:
@@ -20,6 +20,4 @@ class Dnn(DBN):
 
     @staticmethod
     def calcul_softmax(rbm: RBM, x: np.ndarray) -> np.ndarray:
-        return Dnn.softmax(rbm.sortie_entree(x))
-    
-    
+        return DNN.softmax(x @ rbm.w + rbm.b)

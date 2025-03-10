@@ -23,9 +23,17 @@ class DBN:
 
     def generate(self, n: int, steps: int=100) -> np.ndarray:
         samples = self.rbms[-1].generate(n, steps)
-        for rbm in self.rbms[-2::-1]:
-            samples = rbm.sortie_entree(samples)
+
+        for i in range(n):
+            sample = samples[i]
+            for rbm in self.rbms[-2::-1]:
+                sample = rbm.sortie_entree(sample)
+                sample = np.random.binomial(1, sample)
+            
+            samples[i] = sample
+        
         return samples
+
 
 
 if __name__ == "__main__":
