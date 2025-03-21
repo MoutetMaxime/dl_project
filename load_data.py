@@ -18,7 +18,17 @@ def lire_alpha_digit(characters):
     - images (torch.Tensor): Tensor of images corresponding to the specified characters
     """
     # Load the dataset
-    data_mat = sio.loadmat(os.path.join('data', 'binaryalphadigs.mat'))
+    try:
+        data_mat = sio.loadmat(os.path.join('data', 'binaryalphadigs.mat'))
+    except FileNotFoundError:
+        print("Dataset not found in 'data' folder. Trying to load from parent directory...")
+
+        try:
+            data_mat = sio.loadmat('binaryalphadigs.mat')
+        except FileNotFoundError:
+            print("Dataset not found in parent directory. Please download the dataset from the following link and place it in the 'data' folder: https://www.kaggle.com/datasets/angevalli/binary-alpha-digits?select=binaryalphadigs.mat")
+        
+    print("Dataset loaded successfully.")
     images = data_mat['dat']
 
     # Get labels and convert them to lowercase
@@ -48,18 +58,14 @@ def load_mnist(data_dir="data/mnist"):
     """
     os.makedirs(data_dir, exist_ok=True)  # Ensure directory exists
 
-    # Define transformations (convert to tensor and normalize)
+    # # Define transformations (convert to tensor and normalize)
     transform = transforms.Compose([
-        transforms.ToTensor(), 
-        transforms.Normalize((0.1307,), (0.3081,))  # Mean & std from MNIST
+        transforms.ToTensor(),
+        transforms.Lambda(lambda x: (x >= 0.5).float())  # Apply binarization
     ])
 
     # Load training & test datasets
     train_dataset = torchvision.datasets.MNIST(root=data_dir, train=True, download=True, transform=transform)
     test_dataset = torchvision.datasets.MNIST(root=data_dir, train=False, download=True, transform=transform)
 
-    # Create DataLoaders
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=64, shuffle=True)
-    test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=64, shuffle=False)
-
-    return train_loader, test_loader
+    return train_dataset, test_dataset

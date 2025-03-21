@@ -65,28 +65,10 @@ class RBM:
             samples[i] = x_new
         return samples
 
+    def get_nb_params(self):
+        return self.a.size + self.b.size + self.w.size
+    
 
 if __name__ == "__main__":
-    # Train the RBM on the binary alpha digit dataset
-    from load_data import lire_alpha_digit
-
-    characters = ["m"]
-    images = lire_alpha_digit(characters)
-    print(images.shape)
-
-    rbm = RBM(320, 128)
-    rbm.train(images, epochs=30000, batch_size=16, eps=0.01, verbose=True)
-
-    # Generate new images
-    generated_images = rbm.generate(20)
-    print(generated_images.shape)
-    generated_images = generated_images.reshape(20, 20, 16)
-
-    import matplotlib.pyplot as plt
-
-    plt.figure(figsize=(10, 5))
-    for i in range(20):
-        plt.subplot(4, 5, i+1)
-        plt.imshow(generated_images[i], cmap="gray")
-        plt.axis("off")
-    plt.show()
+    rbm = RBM(320, 100)
+    print(rbm.get_nb_params())
