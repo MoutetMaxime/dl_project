@@ -1,7 +1,9 @@
 import numpy as np
+
 from activations import softmax
 from Dbn import DBN
 from Rbm import RBM
+
 
 class DNN(DBN):
     def __init__(self, sizes: list) -> None:
@@ -50,4 +52,3 @@ class DNN(DBN):
         preds = np.argmax(out, axis=1)
         true = np.argmax(y_test, axis=1)
         return np.mean(preds != true)
-
